@@ -1,9 +1,19 @@
-workflow "Automatic Revert" {
-  on = "issue_comment"
-  resolves = "Revert"
-}
+name: Automatic Revert
 
-action "Revert" {
-  uses = "srt32/revert@master"
-  secrets = ["GITHUB_TOKEN"]
-}
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  revert-commit:
+
+    runs-on: ubuntu-latest
+
+    if: contains(github.event.comment.body, '/revert')
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Automatic Revert
+        uses: srt32/revert@v0.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
