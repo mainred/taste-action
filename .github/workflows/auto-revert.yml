@@ -1,0 +1,9 @@
+workflow "Automatic Revert" {
+  on = "issue_comment"
+  resolves = "Revert"
+}
+
+action "Revert" {
+  uses = "srt32/revert@master"
+  secrets = ["GITHUB_TOKEN"]
+}
